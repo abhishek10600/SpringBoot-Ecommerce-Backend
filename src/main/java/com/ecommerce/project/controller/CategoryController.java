@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -31,20 +30,14 @@ public class CategoryController {
 
     @DeleteMapping("/admin/categories/{categoryId}")
     public ResponseEntity<String> deleteCategory(@PathVariable Long categoryId){
-        boolean isDeleted = categoryService.deleteCategory(categoryId);
-        if(isDeleted) {
-            return new ResponseEntity<>("Category deleted successfully", HttpStatus.OK);
-        }
-        return new ResponseEntity<>("Category not found", HttpStatus.NOT_FOUND);
+        String message = categoryService.deleteCategory(categoryId);
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
     @PutMapping("/admin/categories/{categoryId}")
-    public ResponseEntity<String> updateCategory(@PathVariable Long categoryId, @RequestBody Category category){
-        boolean isUpdated = categoryService.updateCategory(categoryId, category);
-        if(isUpdated){
-            return new ResponseEntity<>("Category updated successfully!", HttpStatus.OK);
-        }
-        return new ResponseEntity<>("Category not found", HttpStatus.NOT_FOUND);
+    public ResponseEntity<String> updateCategory(@PathVariable Long categoryId,@Valid @RequestBody Category category){
+        Category updatedCategory = categoryService.updateCategory(categoryId, category);
+        return new ResponseEntity<>("Category updated successfully", HttpStatus.OK);
     }
 
 }
