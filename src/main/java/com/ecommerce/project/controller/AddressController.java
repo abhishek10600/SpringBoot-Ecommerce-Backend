@@ -1,11 +1,13 @@
 package com.ecommerce.project.controller;
 
+import com.ecommerce.project.model.Address;
 import com.ecommerce.project.model.User;
 import com.ecommerce.project.payload.AddressDTO;
 import com.ecommerce.project.service.AddressService;
 import com.ecommerce.project.util.AuthUtil;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.graphql.GraphQlProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -51,5 +53,18 @@ public class AddressController {
 
         List<AddressDTO> addressesDTO = addressService.getUserAddresses(user);
         return new ResponseEntity<>(addressesDTO, HttpStatus.OK);
+    }
+
+    @PutMapping("/addresses/{addressId}")
+    public ResponseEntity<AddressDTO> updateAddress(@PathVariable Long addressId, @RequestBody AddressDTO addressDTO){
+
+        AddressDTO updatedAddressDTO = addressService.updateAddress(addressId, addressDTO);
+        return new ResponseEntity<>(updatedAddressDTO, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/addresses/{addressId}")
+    public ResponseEntity<String> deletedAddress(@PathVariable Long addressId){
+        String status = addressService.deleteAddress(addressId);
+        return new ResponseEntity<>(status, HttpStatus.OK);
     }
 }
